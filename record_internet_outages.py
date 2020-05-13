@@ -26,23 +26,30 @@ if(not os.path.exists(dataFileName)):
 	dataFile.write('down_time,up_time\n')
 	dataFile.close()
 
-if(internet_on()):
-	currentState = 'up'
-else:
-	currentState = 'down'
-	
-if(oldState != currentState):
-	print 'state changed!'
-else:
-	print 'state is the same'
+print 'Downtime recorder is running...'
+print 'Connection state is polled every 15 seconds'
+while(1):
+	if(internet_on()):
+		currentState = 'up'
+	else:
+		currentState = 'down'
+		
+	if(oldState != currentState):
+		print '*** CONNECTION STATE CHANGED *** to ' + currentState
+	else:
+		print 'Connection state is still ' + currentState
 
-dataFile = open(dataFileName, 'ab+')
+	if(oldState == 'up' and currentState == 'down'):
+		dataFile = open(dataFileName, 'ab+')
+		dataFile.write(datetime.datetime.now().strftime('%m/%d/%y %H:%M:%S') + ',')
+		dataFile.close()
+	if(oldState == 'down' and currentState == 'up'):
+		dataFile = open(dataFileName, 'ab+')
+		dataFile.write(datetime.datetime.now().strftime('%m/%d/%y %H:%M:%S') + '\n')
+		dataFile.close()
 
-if(oldState == 'up' and currentState == 'down'):
-	dataFile.write(datetime.datetime.now().strftime('%m/%d/%y %H:%M:%S') + ',')
-if(oldState == 'down' and currentState == 'up'):
-	dataFile.write(datetime.datetime.now().strftime('%m/%d/%y %H:%M:%S') + '\n')
-
-stateFile = open(stateFileName, 'wb+') #overwrite the file
-stateFile.write(currentState)
-stateFile.close()
+	#stateFile = open(stateFileName, 'wb+') #overwrite the file
+	#stateFile.write(currentState)
+	#stateFile.close()
+	oldState = currentState;
+	time.sleep(15);
