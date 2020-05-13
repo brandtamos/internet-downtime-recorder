@@ -2,7 +2,7 @@
 A python script to keep track of how much time your internet connection is down over time. The script creates a file called "data.csv" and records the times the connection goes down and comes back up.
 
 ### Usage
-Place the script wherever your like on your machine. 
+Place `record_internet_outages.py` in whatever folder you'd like on your machine. 
 
 Open the command line in the directory where the script is located and run `python record_internet_outages.py`. 
 
